@@ -1,0 +1,41 @@
+#!/bin/bash 
+
+source ~/.bash/functions
+
+local self_dir=$(script_path $BASH_SOURCE[0])
+source $self_dir/utils
+
+function __git_prompt {
+    ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+
+    # Based on https://gist.github.com/woods/31967
+
+    # Set color based on clean/staged/dirty
+    git_status="$(git status 2> /dev/null)"
+    if [[ ${git_status} =~ "working directory clean" ]]; then
+        state="${green}"
+    elif [[ ${git_status} =~ "Changes to be committed" ]]; then
+        state="${yellow}"
+    else
+        state="${red}"
+    fi
+
+    # Set arrow icon based on status against remote.
+    remote_pattern="# Your branch is (.*) of"
+    if [[ ${git_status} =~ ${remote_pattern} ]]; then
+        if [[ ${BASH_REMATCH[1]} == "ahead" ]]; then
+            remote="↑ "
+        else
+            remote="↓ "
+        fi
+    else
+        remote=""
+    fi
+    diverge_pattern="# Your branch and (.*) have diverged"
+    if [[ ${git_status} =~ ${diverge_pattern} ]]; then
+        remote="↕ "
+    fi
+
+    printf "${white}∓ < ${state}${ref#refs/heads/} ${remote}${white}>${reset_color}"
+}
+

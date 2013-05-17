@@ -1,0 +1,3 @@
+#!/bin/bash
+alias rmsvn="find . -name .svn -exec rm -rf {} \;"
+alias grepsvn='find . -name .svn -prune -or -print0 | xargs -0 grep -H '

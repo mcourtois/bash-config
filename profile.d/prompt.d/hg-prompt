@@ -1,0 +1,10 @@
+#!/bin/bash
+
+local DIR="$(cd "$(dirname $BASH_SOURCE[0])" && pwd )"
+source $DIR/utils
+
+function __hg_prompt {
+    ref=$(hg branch 2> /dev/null) || return
+    printf "${white}☿ <${reset_color} ${ref} ${white}>${reset_color}"
+}
+

@@ -1,0 +1,4 @@
+#!/bin/bash
+alias vdf="vagrant destroy -f"
+alias vs="vagrant ssh"
+alias vu="vagrant up"

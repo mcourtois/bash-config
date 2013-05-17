@@ -1,0 +1,30 @@
+#!/bin/bash
+
+script_path() {
+    pushd . > /dev/null
+    local script_path="$1";
+    while([ -h "${script_path}" ]) do 
+        cd "`dirname "${script_path}"`"
+        script_path="$(readlink "`basename "${script_path}"`")"; 
+    done
+    cd "`dirname "${script_path}"`" > /dev/null
+    script_path="`pwd`";
+    popd  > /dev/null
+    echo $script_path
+}
+
+
+source_directories() {
+    local _directories=${@:1}
+
+    for _directory in $_directories; do
+        if [ -d $_directory ]; then
+            for file in $_directory/*; do
+                if [ -x $file ] && $(file $file | grep -q 'shell script'); then
+                    source $file
+                fi
+            done
+        fi
+    done
+}
+

@@ -1,0 +1,23 @@
+#!/bin/bash 
+
+source ~/.bash/functions
+
+local self_dir=$(script_path $BASH_SOURCE[0])
+source $self_dir/utils
+
+function __svn_prompt {
+    ref=$(svn info 2> /dev/null | egrep '^URL: ' 2> /dev/null) || return
+
+     # Get the name of the branch.
+    local branch_pattern="^URL: .*/(branches|tags)/([^/]+)"
+    local trunk_pattern="^URL: .*/trunk(/.*)?$"
+    if [[ ${ref} =~ $branch_pattern ]]; then
+        branch=${BASH_REMATCH[2]}
+    elif [[ ${ref} =~ $trunk_pattern ]]; then
+        branch='trunk'
+    fi
+
+    printf "${white}ʃ <${reset_color} ${branch} ${white}>${reset_color}"
+}
+
+

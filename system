@@ -1,0 +1,36 @@
+#!/bin/bash
+
+source ~/.bash/functions
+
+ALIASES_D=~/.bash/aliases.d
+PROFILE_D=~/.bash/profile.d
+CUSTOM_ALIASES_D=~/.bash.aliases.d
+CUSTOM_PROFILE_D=~/.bash.profile.d
+
+# Loading default profiles and aliases
+source_directories $ALIASES_D $PROFILE_D
+
+# Loading custom profiles and aliases
+source_directories $CUSTOM_ALIASES_D $CUSTOM_PROFILE_D
+
+function enable-aliases() {
+    local _aliases_name=$1
+    local _directories=($ALIASES_D $CUSTOM_ALIASES_D)
+    for _directory in ${_directories[@]}; do
+        if [ -f $_directory/$_aliases_name ]; then
+            chmod +x $_directory/$_aliases_name
+            source $_directory/$_aliases_name
+        fi
+    done
+}
+
+function disable-aliases() {
+    local _aliases_name=$1
+    local _directories=($ALIASES_D $CUSTOM_ALIASES_D)
+    for dir in ${_directories[@]}; do
+        if [ -f $_directory/$_aliases_name ]; then
+            chmod -x $_directory/$_aliases_name
+        fi
+    done
+}
+

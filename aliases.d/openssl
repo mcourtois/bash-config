@@ -1,0 +1,6 @@
+#!/bin/bash
+
+function showcrt() {
+    local _crt_file=$1
+    openssl x509 -in "$_crt_file" -noout -text
+}
