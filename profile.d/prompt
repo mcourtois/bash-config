@@ -9,6 +9,6 @@ source $(script_path $BASH_SOURCE[0])/prompt.d/hg-prompt
 source $(script_path $BASH_SOURCE[0])/prompt.d/svn-prompt
 
 local window_title="\[\e]0;${current_dir}\a\]"
-local vcs_prompt=" \$(__git_prompt)\$(__hg_prompt)\$(__svn_prompt)"
-PS1="${window_title}[${history_number}] [${username}@\[${cyan}\]${hostname}\[${reset_color}\] ${current_dir_basename}]\[${vcs_prompt}\]\$ "
+local vcs_prompt="$(__git_prompt)$(__hg_prompt)$(__svn_prompt)"
+PS1="${window_title}[${history_number}] [${username}@${cyan}${hostname}${reset_color} ${current_dir_basename}] ${vcs_prompt}\$ "
 
