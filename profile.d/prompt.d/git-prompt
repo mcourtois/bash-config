@@ -7,6 +7,8 @@ source $self_dir/utils
 
 function __git_prompt {
     ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+    branch_name="(unnamed branch)"     # detached HEAD
+    branch_name=${ref#refs/heads/}
 
     # Based on https://gist.github.com/woods/31967
 
@@ -20,22 +22,31 @@ function __git_prompt {
         state="${red}"
     fi
 
-    # Set arrow icon based on status against remote.
-    remote_pattern="# Your branch is (.*)"
-    if [[ ${git_status} =~ ${remote_pattern} ]]; then
-        if [[ ${BASH_REMATCH[1]} == "ahead" ]]; then
-            remote="↑ "
-        else
-            remote="↓ "
-        fi
-    else
-        remote=""
-    fi
-    diverge_pattern="# Your branch and (.*) have diverged"
-    if [[ ${git_status} =~ ${diverge_pattern} ]]; then
-        remote="↕ "
+    # Set arrow icon based on status against origin.
+    [ ! -f .git/FETCH_HEAD ] && fetch_required=1
+
+    origin_outdated="$(find .git/FETCH_HEAD -mmin +5 2>/dev/null | wc -l | bc)"
+    if [[ "${origin_outdated}" == "1" ]]; then
+        fetch_required=1
     fi
 
-    printf "${white}∓ < ${state}${ref#refs/heads/} ${remote}${white}>${reset_color}"
+    if [[ "${fetch_required}" == "1" ]]; then
+        echo "Remote information is outdated. Running git fetch."
+        git fetch --all
+    fi
+
+    git_behind="$(git rev-list HEAD..origin/${branch_name} | wc -l | bc)"
+    git_ahead="$(git rev-list origin/${branch_name}..HEAD | wc -l | bc)"
+
+    remote=""
+    if [[ "${git_behind}" != "0" ]]; then
+        remote="${remote}↓"
+    fi
+
+    if [[ "${git_ahead}" != "0" ]]; then
+        remote="${remote}↑"
+    fi
+
+    printf "${white}∓ (${state}${branch_name}${remote}${white})${reset_color} "
 }
 
