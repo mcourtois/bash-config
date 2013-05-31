@@ -1,9 +1,11 @@
 #!/bin/bash
-alias ls="ls -aG"
+alias ls="ls -aG --color"
 alias ll="ls -laG"
 alias li="ls -ail | sort"
 alias rm="rm -i"
 alias c="clear"
+
+alias slay="kill"
 
 alias ..="cd .."
 alias ...="cd ../../"
