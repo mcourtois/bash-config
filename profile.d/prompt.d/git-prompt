@@ -9,6 +9,12 @@ function __git_prompt {
     ref=$(git symbolic-ref HEAD 2> /dev/null) || return
     branch_name="(unnamed branch)"     # detached HEAD
     branch_name=${ref#refs/heads/}
+    remote_branch_name="$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)"
+    remote_status="\e[5m${light_red}"
+    if [ "${remote_branch_name}" == "@{u}" ]; then
+      remote_status="${remote_status}⚠ "
+      remote_branch_name=""
+    fi
 
     # Based on https://gist.github.com/woods/31967
 
@@ -23,9 +29,9 @@ function __git_prompt {
     fi
 
     # Set arrow icon based on status against origin.
-    [ ! -f .git/FETCH_HEAD ] && fetch_required=1
+    [ ! -f $(git rev-parse --git-dir)/FETCH_HEAD ] && fetch_required=1
 
-    origin_outdated="$(find .git/FETCH_HEAD -mmin +5 2>/dev/null | wc -l | bc)"
+    origin_outdated="$(find .git/FETCH_HEAD -mmin +10 2>/dev/null | wc -l | bc)"
     if [[ "${origin_outdated}" == "1" ]]; then
         fetch_required=1
     fi
@@ -35,18 +41,21 @@ function __git_prompt {
         git fetch --all
     fi
 
-    git_behind="$(git rev-list HEAD..origin/${branch_name} | wc -l | bc)"
-    git_ahead="$(git rev-list origin/${branch_name}..HEAD | wc -l | bc)"
+    if [ "${remote_branch_name}" != "" ]; then
+      git_behind="$(git rev-list HEAD..${remote_branch_name} | wc -l | bc)"
+      git_ahead="$(git rev-list ${remote_branch_name}..HEAD | wc -l | bc)"
 
-    remote=""
-    if [[ "${git_behind}" != "0" ]]; then
-        remote="${remote}↓"
+      if [[ "${git_behind}" != "0" ]]; then
+          remote_status="${remote_status}↓"
+      fi
+
+      if [[ "${git_ahead}" != "0" ]]; then
+          remote_status="${remote_status}↑"
+      fi
     fi
 
-    if [[ "${git_ahead}" != "0" ]]; then
-        remote="${remote}↑"
-    fi
+    remote_status="${remote_status}${reset_color}"
 
-    printf "${white}∓ (${state}${branch_name}${remote}${white})${reset_color} "
+    printf "${white}∓ (${state}${branch_name}${remote_status}${white})${reset_color} "
 }
 
