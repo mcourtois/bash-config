@@ -7,6 +7,7 @@ source $self_dir/utils
 
 function __git_prompt {
     ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+    git_basedir=$(git rev-parse --git-dir)
     branch_name="(unnamed branch)"     # detached HEAD
     branch_name=${ref#refs/heads/}
     remote_branch_name="$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)"
@@ -29,9 +30,9 @@ function __git_prompt {
     fi
 
     # Set arrow icon based on status against origin.
-    [ ! -f $(git rev-parse --git-dir)/FETCH_HEAD ] && fetch_required=1
+    [ ! -f ${git_basedir}/FETCH_HEAD ] && fetch_required=1
 
-    origin_outdated="$(find .git/FETCH_HEAD -mmin +10 2>/dev/null | wc -l | bc)"
+    origin_outdated="$(find ${git_basedir}/FETCH_HEAD -mmin +10 2>/dev/null | wc -l | bc)"
     if [[ "${origin_outdated}" == "1" ]]; then
         fetch_required=1
     fi
