@@ -10,7 +10,7 @@ source $(script_path $BASH_SOURCE[0])/prompt.d/svn-prompt
 __set_prompt() {
     local window_title="\[\e]0;${current_dir}\a\]"
     local vcs_prompt="$(__git_prompt)$(__hg_prompt)$(__svn_prompt)"
-    PS1="${window_title}[${history_number}] [${username}@${cyan}${hostname}${reset_color} ${current_dir_basename}] ${vcs_prompt}\$ "
+    PS1="${window_title}${reset_color}${vcs_prompt}${current_dir}\$ "
 }
 
 unset PS1
