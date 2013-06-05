@@ -1,0 +1,12 @@
+#!/bin/bash
+
+source ~/.bash/functions
+
+local self_dir=$(script_path $BASH_SOURCE[0])
+source $self_dir/utils
+
+function __pyvenv_prompt {
+    if [[ -n $VIRTUAL_ENV ]]; then
+        printf "(`basename \"$VIRTUAL_ENV\"`) "
+    fi
+}
