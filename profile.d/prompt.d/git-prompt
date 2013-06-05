@@ -11,7 +11,7 @@ function __git_prompt {
     branch_name="(unnamed branch)"     # detached HEAD
     branch_name=${ref#refs/heads/}
     remote_branch_name="$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)"
-    remote_status="\e[5m${light_red}"
+    remote_status="${blink}${light_red}"
     if [ "${remote_branch_name}" == "@{u}" ]; then
       remote_status="${remote_status}⚠ "
       remote_branch_name=""
