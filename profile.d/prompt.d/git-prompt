@@ -22,11 +22,11 @@ function __git_prompt {
     # Set color based on clean/staged/dirty
     git_status="$(git status 2> /dev/null)"
     if [[ ${git_status} =~ "working directory clean" ]]; then
-        state="${BIGreen}"
+        state="${Green}"
     elif [[ ${git_status} =~ "Changes to be committed" ]]; then
-        state="${BIYellow}"
+        state="${Yellow}"
     else
-        state="${BIRed}"
+        state="${Red}"
     fi
 
     # Set arrow icon based on status against origin.
