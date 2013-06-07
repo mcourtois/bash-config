@@ -30,18 +30,6 @@ function __git_prompt {
     fi
 
     # Set arrow icon based on status against origin.
-    [ ! -f ${git_basedir}/FETCH_HEAD ] && fetch_required=1
-
-    origin_outdated="$(find ${git_basedir}/FETCH_HEAD -mmin +10 2>/dev/null | wc -l | bc)"
-    if [[ "${origin_outdated}" == "1" ]]; then
-        fetch_required=1
-    fi
-
-    if [[ "${fetch_required}" == "1" ]]; then
-        echo "Remote information is outdated. Running git fetch."
-        git fetch --all
-    fi
-
     if [ "${remote_branch_name}" != "" ]; then
       git_behind="$(git rev-list HEAD..${remote_branch_name} | wc -l | bc)"
       git_ahead="$(git rev-list ${remote_branch_name}..HEAD | wc -l | bc)"
@@ -60,3 +48,19 @@ function __git_prompt {
     printf "${BIWhite}∓ (${state}${branch_name}${remote_status}${BIWhite})${Color_Off} "
 }
 
+function __git_fetch {
+    ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+    git_basedir=$(git rev-parse --git-dir)
+    [ ! -f ${git_basedir}/FETCH_HEAD ] && fetch_required=1
+
+    origin_outdated="$(find ${git_basedir}/FETCH_HEAD -mmin +10 2>/dev/null | wc -l | bc)"
+    if [[ "${origin_outdated}" == "1" ]]; then
+        fetch_required=1
+    fi
+
+    if [[ "${fetch_required}" == "1" ]]; then
+        echo "Remote information is outdated. Running git fetch."
+        git fetch --all
+    fi
+
+}
