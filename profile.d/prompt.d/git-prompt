@@ -11,7 +11,7 @@ function __git_prompt {
     branch_name="(unnamed branch)"     # detached HEAD
     branch_name=${ref#refs/heads/}
     remote_branch_name="$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)"
-    remote_status="${blink}${light_red}"
+    remote_status="${blink}${BIRed}"
     if [ "${remote_branch_name}" == "@{u}" ]; then
       remote_status="${remote_status}⚠ "
       remote_branch_name=""
@@ -22,11 +22,11 @@ function __git_prompt {
     # Set color based on clean/staged/dirty
     git_status="$(git status 2> /dev/null)"
     if [[ ${git_status} =~ "working directory clean" ]]; then
-        state="${green}"
+        state="${BIGreen}"
     elif [[ ${git_status} =~ "Changes to be committed" ]]; then
-        state="${yellow}"
+        state="${BIYellow}"
     else
-        state="${red}"
+        state="${BIRed}"
     fi
 
     # Set arrow icon based on status against origin.
@@ -55,8 +55,8 @@ function __git_prompt {
       fi
     fi
 
-    remote_status="${remote_status}${reset_color}"
+    remote_status="${remote_status}${Color_Off}"
 
-    printf "${white}∓ (${state}${branch_name}${remote_status}${white})${reset_color} "
+    printf "${BIWhite}∓ (${state}${branch_name}${remote_status}${BIWhite})${Color_Off} "
 }
 
