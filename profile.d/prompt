@@ -9,10 +9,11 @@ source $(script_path $BASH_SOURCE[0])/prompt.d/svn-prompt
 source $(script_path $BASH_SOURCE[0])/prompt.d/python-virtualenv
 
 __set_prompt() {
+    local vcs_pre="$(__git_fetch)"
     local vcs_prompt="$(__git_prompt)$(__hg_prompt)$(__svn_prompt)"
     local virtualenv="$(__pyvenv_prompt)"
     local window_title="\[\e]0;${virtualenv}${current_dir}\a\]"
-    PS1="${window_title}${reset_color}${virtualenv}${vcs_prompt}${current_dir}\$ "
+    PS1="${vcs_pre}${vcs_pre:+"\\n"}${PREFIX}${window_title}${virtualenv}${vcs_prompt}${SUFFIX}\$ "
 }
 
 unset PS1

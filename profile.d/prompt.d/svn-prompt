@@ -17,7 +17,7 @@ function __svn_prompt {
         branch='trunk'
     fi
 
-    printf "${white}ʃ <${reset_color} ${branch} ${white}>${reset_color}"
+    printf "${white}ʃ (${reset_color}${branch}${white}) ${reset_color}"
 }
 
 
