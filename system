@@ -14,7 +14,13 @@ source_directories $ALIASES_D $PROFILE_D
 source_directories $CUSTOM_ALIASES_D $CUSTOM_PROFILE_D
 
 function reload() {
-    source ~/.bash/system
+    if [ -e ~/.bashrc ]; then
+        source ~/.bashrc
+    elif [ -e ~/.bash_profile ]; then
+        source ~/.bash_profile
+    else
+        source ~/.bash/system
+    fi
 }
 
 function enable-aliases() {
