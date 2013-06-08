@@ -11,7 +11,7 @@ function __git_prompt {
     branch_name="(unnamed branch)"     # detached HEAD
     branch_name=${ref#refs/heads/}
     remote_branch_name="$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)"
-    remote_status="${blink}${light_red}"
+    remote_status="${blink}${BIRed}"
     if [ "${remote_branch_name}" == "@{u}" ]; then
       remote_status="${remote_status}⚠ "
       remote_branch_name=""
@@ -22,26 +22,14 @@ function __git_prompt {
     # Set color based on clean/staged/dirty
     git_status="$(git status 2> /dev/null)"
     if [[ ${git_status} =~ "working directory clean" ]]; then
-        state="${green}"
+        state="${Green}"
     elif [[ ${git_status} =~ "Changes to be committed" ]]; then
-        state="${yellow}"
+        state="${Yellow}"
     else
-        state="${red}"
+        state="${Red}"
     fi
 
     # Set arrow icon based on status against origin.
-    [ ! -f ${git_basedir}/FETCH_HEAD ] && fetch_required=1
-
-    origin_outdated="$(find ${git_basedir}/FETCH_HEAD -mmin +10 2>/dev/null | wc -l | bc)"
-    if [[ "${origin_outdated}" == "1" ]]; then
-        fetch_required=1
-    fi
-
-    if [[ "${fetch_required}" == "1" ]]; then
-        echo "Remote information is outdated. Running git fetch."
-        git fetch --all
-    fi
-
     if [ "${remote_branch_name}" != "" ]; then
       git_behind="$(git rev-list HEAD..${remote_branch_name} | wc -l | bc)"
       git_ahead="$(git rev-list ${remote_branch_name}..HEAD | wc -l | bc)"
@@ -55,8 +43,24 @@ function __git_prompt {
       fi
     fi
 
-    remote_status="${remote_status}${reset_color}"
+    remote_status="${remote_status}${Color_Off}"
 
-    printf "${white}∓ (${state}${branch_name}${remote_status}${white})${reset_color} "
+    printf "${BIWhite}∓ (${state}${branch_name}${remote_status}${BIWhite})${Color_Off} "
 }
 
+function __git_fetch {
+    ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+    git_basedir=$(git rev-parse --git-dir)
+    [ ! -f ${git_basedir}/FETCH_HEAD ] && fetch_required=1
+
+    origin_outdated="$(find ${git_basedir}/FETCH_HEAD -mmin +10 2>/dev/null | wc -l | bc)"
+    if [[ "${origin_outdated}" == "1" ]]; then
+        fetch_required=1
+    fi
+
+    if [[ "${fetch_required}" == "1" ]]; then
+        echo "Remote information is outdated. Running git fetch."
+        git fetch --all
+    fi
+
+}
