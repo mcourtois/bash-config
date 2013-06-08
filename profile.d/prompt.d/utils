@@ -77,15 +77,16 @@ On_IWhite="\[\033[0;107m\]"   # White
 Time24h="\t"
 Time12h="\T"
 Time12a="\@"
-PathShort="\w"
-PathFull="\W"
+PathShort="\W"
+PathFull="\w"
 NewLine="\n"
 Jobs="\j"
 Username="\u"
 HostnameShort="\h"
 HostnameFull="\H"
-
-
+HistoryNumber="\!"
+PromptSymbol="\$"
+Space=" "
 
 reset_color="$Color_Off"
 
@@ -104,8 +105,3 @@ white="\[\e[1;37m\]"
 
 blink="\[\e[5m\]"
 
-history_number="\!"
-username="\u"
-hostname="\h"
-current_dir="\w"
-current_dir_basename="\W"
