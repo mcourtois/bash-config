@@ -16,6 +16,7 @@ __set_prompt() {
 
     local virtualenv="$(__pyvenv_prompt)"
     local vcs_pre="$(__git_fetch)"
+    local vcs_pre="${vcs_pre:+"$vcs_pre\\n"}"
     local vcs_prompt="$(__git_prompt)$(__hg_prompt)$(__svn_prompt)"
 
     unset PS1
