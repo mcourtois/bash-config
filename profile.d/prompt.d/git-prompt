@@ -6,10 +6,20 @@ local self_dir=$(script_path $BASH_SOURCE[0])
 source $self_dir/utils
 
 function __git_prompt {
-    ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+    git rev-parse --is-inside-work-tree >/dev/null 2>&1 || git rev-parse --is-inside-git-dir >/dev/null 2>&1 || return
+
+    ref=$(git symbolic-ref HEAD 2>/dev/null)
     git_basedir=$(git rev-parse --git-dir)
-    branch_name="(unnamed branch)"     # detached HEAD
     branch_name=${ref#refs/heads/}
+    if [ "${branch_name}" == "" ]; then
+      # detached HEAD
+      tag_name=$(git describe --abbrev=0 --exact-match --tags 2>/dev/null)
+      if [ "${tag_name}" != "" ]; then
+        branch_name="tag @ ${tag_name}"
+      else
+        branch_name="detached @ $(git rev-parse --short HEAD)"
+      fi
+    fi
     remote_branch_name="$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)"
     remote_status="${blink}${BIRed}"
     if [ "${remote_branch_name}" == "@{u}" ]; then
