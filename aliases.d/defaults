@@ -1,5 +1,4 @@
 #!/bin/bash
-alias ls="ls -aG"
 alias rm="rm -i"
 
 alias grep="grep --color=auto"
