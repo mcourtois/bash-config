@@ -2,7 +2,11 @@
 
 source ~/.bash/functions
 
-register_alias ls "ls -aG"
+case $( uname -s ) in
+Linux) register_alias ls "ls -a --color";;
+Darwin) register_alias ls "ls -aG";;
+esac
+
 register_alias rm "rm -i"
 
 register_alias grep "grep --color=auto"
