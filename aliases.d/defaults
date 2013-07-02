@@ -1,7 +1,10 @@
 #!/bin/bash
-alias ls="ls -aG"
-alias rm="rm -i"
 
-alias grep="grep --color=auto"
-alias egrep="egrep --color=auto"
-alias fgrep="fgrep --color=auto"
+source ~/.bash/functions
+
+register_alias ls "ls -aG"
+register_alias rm "rm -i"
+
+register_alias grep "grep --color=auto"
+register_alias egrep "egrep --color=auto"
+register_alias fgrep "fgrep --color=auto"

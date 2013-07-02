@@ -1,3 +1,6 @@
 #!/bin/bash
-alias rmhg="find . -name .hg -exec rm -rf {} \;"
-alias grephg="find . -name .hg -prune -or -print0 | xargs -0 grep -H "
+
+source ~/.bash/functions
+
+register_alias rmhg "find . -name .hg -exec rm -rf {} \;"
+register_alias grephg "find . -name .hg -prune -or -print0 | xargs -0 grep -H "

@@ -14,6 +14,8 @@ source_directories $ALIASES_D $PROFILE_D
 source_directories $CUSTOM_ALIASES_D $CUSTOM_PROFILE_D
 
 function reload() {
+    unregister_aliases
+
     if [ -e ~/.bashrc ]; then
         source ~/.bashrc
     elif [ -e ~/.bash_profile ]; then
