@@ -28,3 +28,14 @@ source_directories() {
     done
 }
 
+register_alias() {
+  alias "$1=$2"
+  REGISTERED_ALIASES+=( $1 )
+}
+
+unregister_aliases() {
+  for registered_alias in ${REGISTERED_ALIASES[@]}; do
+    unalias $registered_alias
+  done
+  unset REGISTERED_ALIASES
+}

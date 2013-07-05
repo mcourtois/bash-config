@@ -1,4 +1,7 @@
 #!/bin/bash
-alias vdf="vagrant destroy -f"
-alias vs="vagrant ssh"
-alias vu="vagrant up"
+
+source ~/.bash/functions
+
+register_alias vdf "vagrant destroy -f"
+register_alias vs "vagrant ssh"
+register_alias vu "vagrant up"

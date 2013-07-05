@@ -1,0 +1,48 @@
+#!/bin/bash
+
+function git-tag-for {
+  repo=$(git remote -v 2>/dev/null | head -1 | awk '{ print $2 }')
+  for grep in "${@}"; do
+    for f in $(git log  --oneline --all --grep="$grep" | awk '{ print $1  }'); do
+      git tag --contains $f
+    done | sort | uniq -c | sort -s -n -r -k1 | head -1 | awk '{ print "'$grep'\t'$repo'\t" $2 }'
+  done 2>/dev/null
+}
+
+function git-repo-for() {
+  for dir in $(find . -name .git -maxdepth 4); do
+    repo=$(dirname $dir)
+    pushd $repo >/dev/null
+    git-tag-for "${@}"
+    popd >/dev/null
+  done
+}
+
+if [ -z $RGP_MAX_DEPTH ]; then
+    RGP_MAX_DEPTH=3
+fi
+
+if [[ -n $1 && "$1" =~ ^[0-9]+$ ]]; then
+    RGP_MAX_DEPTH=$1
+fi
+
+alias rgp=recursive-git-pull
+
+function recursive-git-pull {
+  if [ `dirs -p | wc -l` -gt $RGP_MAX_DEPTH ]; then
+    return
+  fi
+
+  for f in *; do
+    if [ -d "$f" ]; then
+      pushd "$f" > /dev/null
+      if [ -d .git ]; then
+        echo -e "\033[1;31m--\033[0m git pull -> \033[0;36m$f\033[0m [`git branch`]"
+        git pull --rebase
+      else
+        recursive-git-pull
+      fi
+      popd > /dev/null
+    fi
+  done
+}
