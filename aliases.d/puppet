@@ -2,5 +2,13 @@
 
 source ~/.bash/functions
 
-register_alias pupclean 'for i in $(find ./ -name '*.pp'); do puppet-clean -a -b -e -l -m -o -r -t2 -v -w $i > $i.new ; mv $i $i.bak ; mv $i.new $i; done'
+function pupclean() {
+  for i in $(find ./ -name '*.pp');
+  do
+    puppet-clean -a -b -e -l -m -o -r -t2 -v -w $i > $i.new
+    mv $i $i.bak
+    mv $i.new $i
+  done
+}
+
 register_alias puplint "find ./ -name '*.pp' -exec puppet-lint --no-80chars-check --with-filename --with-context {} \;"
