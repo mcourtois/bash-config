@@ -1,4 +1,5 @@
 #!/bin/bash
+
 source ~/.bash/functions
 
 case $( uname -s ) in
