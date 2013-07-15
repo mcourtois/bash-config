@@ -7,6 +7,7 @@ source $(script_path $BASH_SOURCE[0])/prompt.d/git-prompt
 source $(script_path $BASH_SOURCE[0])/prompt.d/hg-prompt
 source $(script_path $BASH_SOURCE[0])/prompt.d/svn-prompt
 source $(script_path $BASH_SOURCE[0])/prompt.d/python-virtualenv
+source $(script_path $BASH_SOURCE[0])/prompt.d/ruby-virtualenv
 
 # Default prompt order, can be redefined
 PROMPT_ORDER=(window_title vcs_pre virtualenv vcs_prompt PathFull PromptSymbol Space)
@@ -14,7 +15,7 @@ PROMPT_ORDER=(window_title vcs_pre virtualenv vcs_prompt PathFull PromptSymbol S
 __set_prompt() {
     local window_title="\[\e]0;${virtualenv}${PathFull}\a\]"
 
-    local virtualenv="$(__pyvenv_prompt)"
+    local virtualenv="$(__pyvenv_prompt)$(__rbvenv_prompt)"
     local vcs_pre="$(__git_fetch)"
     local vcs_pre="${vcs_pre:+"$vcs_pre\\n"}"
     local vcs_prompt="$(__git_prompt)$(__hg_prompt)$(__svn_prompt)"
