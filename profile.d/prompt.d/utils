@@ -73,6 +73,9 @@ On_IPurple="\[\033[10;95m\]"  # Purple
 On_ICyan="\[\033[0;106m\]"    # Cyan
 On_IWhite="\[\033[0;107m\]"   # White
 
+# Extended colors
+Orange="\[\033[38;5;172m\]"
+
 # Various variables you might want for your PS1 prompt instead
 Time24h="\t"
 Time12h="\T"
