@@ -37,7 +37,7 @@ function recursive-git-pull {
     if [ -d "$f" ]; then
       pushd "$f" > /dev/null
       if [ -d .git ]; then
-        echo -e "\033[1;31m--\033[0m git pull -> \033[0;36m$f\033[0m [`git branch`]"
+        echo -e "\x1B[1;31m--\x1B[0m git pull -> \x1B[0;36m$f\x1B[0m [$(git branch | sed -e 's/ //' | sed -e :a -e '$!N; s/\*[ ]*\([^ ]*\)/\\x1B\[1;31m\1\\x1B\[0m/; s/\n/ /; ta')]"
         git pull --rebase
       else
         recursive-git-pull
