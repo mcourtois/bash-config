@@ -46,3 +46,13 @@ function recursive-git-pull {
     fi
   done
 }
+
+function git-rebase-upstream {
+  if [ ! $(git remote | grep upstream) ]; then
+    echo -e "No \x1B[1;31mupstream\x1B[0m remote configured for this repo, unable to rebase \x1B[1;31mupstream/master\x1B[0m"
+  else
+    git checkout master
+    git fetch upstream
+    git merge upstream/master
+  fi
+}
