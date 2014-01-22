@@ -5,6 +5,17 @@ source $DIR/utils
 
 function __hg_prompt {
     ref=$(hg branch 2> /dev/null) || return
-    printf "${white}☿ <${reset_color} ${ref} ${white}>${reset_color}"
+
+    hg_status="$(hg status 2> /dev/null)"
+    hg_status_dirty="$(hg status -a -m -r 2> /dev/null)"
+    if [[ ${hg_status} == "" ]]; then
+      state=${Green}
+    elif [[ ${hg_status_dirty} != "" ]]; then
+      state=${Yellow}
+    else
+      state=${Red}
+    fi
+
+    printf "${BIWhite}☿ (${state}${ref}${BIWhite})${Color_Off} "
 }
 
