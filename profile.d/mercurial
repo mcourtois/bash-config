@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if [ -z $RHP_MAX_DEPTH ]; then
+    RHP_MAX_DEPTH=3
+fi
+
+if [[ -n $1 && "$1" =~ ^[0-9]+$ ]]; then
+    RHP_MAX_DEPTH=$1
+fi
+
+alias rhp=recursive-hg-pull
+
+function recursive-hg-pull {
+  if [ `dirs -p | wc -l` -gt $RHP_MAX_DEPTH ]; then
+    return
+  fi
+
+  for f in *; do
+    if [ -d "$f" ]; then
+      pushd "$f" > /dev/null
+      if [ -d .hg ]; then
+        echo -e "\x1B[1;31m--\x1B[0m hg pull -> \x1B[0;36m$f\x1B[0m [$(hg branch | sed -e 's/ //' | sed -e :a -e '$!N; s/\*[ ]*\([^ ]*\)/\\x1B\[1;31m\1\\x1B\[0m/; s/\n/ /; ta')]"
+        hg pull && hg update
+      else
+        recursive-hg-pull
+      fi
+      popd > /dev/null
+    fi
+  done
+}
