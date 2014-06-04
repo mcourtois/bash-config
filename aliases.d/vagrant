@@ -5,3 +5,4 @@ source ~/.bash/functions
 register_alias vdf "vagrant destroy -f"
 register_alias vs "vagrant ssh"
 register_alias vu "vagrant up"
+register_alias vp "vagrant provision"

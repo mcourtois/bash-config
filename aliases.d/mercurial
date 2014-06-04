@@ -4,3 +4,5 @@ source ~/.bash/functions
 
 register_alias rmhg "find . -name .hg -exec rm -rf {} \;"
 register_alias grephg "find . -name .hg -prune -or -print0 | xargs -0 grep -H "
+register_alias hg-authors "hg log --template '{author}\n' | sort | uniq"
+register_alias rmorig 'find . -name "*.orig" -print -delete'
