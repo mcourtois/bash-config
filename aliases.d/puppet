@@ -11,4 +11,4 @@ function pupclean() {
   done
 }
 
-register_alias puplint "find ./ -name '*.pp' -exec puppet-lint --no-80chars-check --with-filename --with-context {} \;"
+register_alias puplint "find ./ -name '*.pp' -exec puppet-lint --no-80chars-check --with-filename --with-context --no-documentation-check {} \;"
