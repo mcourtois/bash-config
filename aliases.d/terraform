@@ -1,0 +1,9 @@
+#!/bin/bash
+
+source ~/.bash/functions
+
+register_alias tf "terraform"
+register_alias tfp "terraform plan"
+register_alias tfd "terraform plan -destroy"
+register_alias tfa "terraform apply"
+register_alias tfs "terraform show"

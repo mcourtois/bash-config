@@ -29,8 +29,18 @@ source_directories() {
 }
 
 register_alias() {
-  alias "$1=$2"
-  REGISTERED_ALIASES+=( $1 )
+  local _alias=$1
+  local _command=$2
+  alias "$_alias=$_command"
+  REGISTERED_ALIASES+=( $_alias )
+}
+
+unregister_alias() {
+  local _alias=$1
+  if [[ " ${REGISTERED_ALIASES[@]} " =~ " ${_alias} " ]]; then
+    unalias $_alias
+    REGISTERED_ALIASES=( ${REGISTERED_ALIASES[@]/$_alias} )
+  fi
 }
 
 unregister_aliases() {
