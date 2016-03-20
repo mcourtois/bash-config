@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mcourtois/bash-config.svg?branch=master)](https://travis-ci.org/mcourtois/bash-config)
+
 bash-config
 ===========
 
