@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.bash/functions
+
 if [ -z $RHP_MAX_DEPTH ]; then
     RHP_MAX_DEPTH=3
 fi
@@ -8,8 +10,8 @@ if [[ -n $1 && "$1" =~ ^[0-9]+$ ]]; then
     RHP_MAX_DEPTH=$1
 fi
 
-alias rhp=recursive-hg-pull
-alias rhu=recursive-hg-update
+register_alias rhp "recursive-hg-pull"
+register_alias rhu "recursive-hg-update"
 
 function recursive-hg-pull {
   if [ `dirs -p | wc -l` -gt $RHP_MAX_DEPTH ]; then

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.bash/functions
+
 function git-tag-for {
   repo=$(git remote -v 2>/dev/null | head -1 | awk '{ print $2 }')
   for grep in "${@}"; do
@@ -26,7 +28,7 @@ if [[ -n $1 && "$1" =~ ^[0-9]+$ ]]; then
     RGP_MAX_DEPTH=$1
 fi
 
-alias rgp=recursive-git-pull
+register_alias rgp "recursive-git-pull"
 
 function recursive-git-pull {
   if [ `dirs -p | wc -l` -gt $RGP_MAX_DEPTH ]; then

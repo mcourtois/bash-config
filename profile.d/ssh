@@ -1,0 +1,25 @@
+#!/bin/bash
+
+source ~/.bash/functions
+
+register_alias ssh "ssh-generate-config && ssh"
+
+function ssh-generate-config() {
+	local _config_d=${1:-~/.ssh/config.d}
+	local _generated_config=${2:-~/.ssh/config}
+
+  if [ -d $_config_d ]; then
+  	if [ -e $_config_d/config-BASE ]; then
+  		cat $_config_d/config-BASE > $_generated_config
+  	else
+  	  echo > $_generated_config
+  	fi
+
+  	for file in $(find $_config_d/ -name '[0-9]*-*'); do
+  	  echo "### ${file} ###" >> $_generated_config
+  	  cat $file >> $_generated_config
+  	done
+
+  	sync
+  fi
+}
