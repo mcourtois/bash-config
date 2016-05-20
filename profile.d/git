@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source ~/.bash/functions
-
 function git-tag-for {
   repo=$(git remote -v 2>/dev/null | head -1 | awk '{ print $2 }')
   for grep in "${@}"; do

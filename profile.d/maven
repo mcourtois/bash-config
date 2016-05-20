@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source ~/.bash/functions
-
 if [ -z $RMC_MAX_DEPTH ]; then
   RMC_MAX_DEPTH=3
 fi

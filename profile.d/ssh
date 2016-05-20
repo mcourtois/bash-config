@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source ~/.bash/functions
-
 register_alias ssh "ssh-generate-config && ssh"
 
 function ssh-generate-config() {

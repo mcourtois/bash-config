@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source ~/.bash/functions
-
 if [ -z $RHP_MAX_DEPTH ]; then
     RHP_MAX_DEPTH=3
 fi
