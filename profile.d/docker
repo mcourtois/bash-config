@@ -1,0 +1,18 @@
+#!/bin/bash
+
+function docker-clean-all() {
+  docker-clean-containers
+  docker-clean-volumes
+}
+
+function docker-clean-volumes() {
+  docker volume rm $(docker volume ls -qf dangling=true)
+}
+
+function docker-clean-containers() {
+  docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs docker rm
+}
+
+function docker-shell() {
+  docker exec -it $1 /bin/bash
+}
