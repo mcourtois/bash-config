@@ -1,5 +1,7 @@
 #!/bin/bash
 
+register_alias docker-moby "screen -D -R -S moby ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/tty"
+
 function docker-clean-all() {
   docker-clean-containers
   docker-clean-volumes
