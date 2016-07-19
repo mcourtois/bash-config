@@ -1,0 +1,6 @@
+#!/bin/bash
+
+source ~/.bash/functions
+
+register_alias npm-clean "npm ls -p --depth=0 | awk -F/ '/node_modules/ && !/\/npm$/ {print $NF}' | xargs npm rm"
+register_alias npm-clean-global "npm ls -gp --depth=0 | awk -F/ '/node_modules/ && !/\/npm$/ {print $NF}' | xargs npm -g rm"
