@@ -5,6 +5,8 @@ source ~/.bash/functions
 case $( uname -s ) in
   Linux)
     register_alias ls "ls -a --color"
+    register_alias pbcopy "xsel --clipboard --input"
+    register_alias pbpaste "xsel --clipboard --output"
     ;;
   Darwin)
     register_alias ls "ls -aG"
